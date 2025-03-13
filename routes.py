@@ -28,11 +28,12 @@ def agregar_producto():
     datos = request.json
     nombre = datos.get("nombre")
     precio = datos.get("precio")
+    stock = datos.get("stock")
 
     conn = get_db_connection()
     cur = conn.cursor()
 
-    cur.execute("INSERT INTO productos (nombre, precio) VALUES (%s, %s) RETURNING id;", (nombre, precio))
+    cur.execute("INSERT INTO productos (nombre, precio,stock) VALUES (%s, %s, %s) RETURNING id;", (nombre, precio,stock))
     nuevo_id = cur.fetchone()[0]
     
     conn.commit()
@@ -47,11 +48,12 @@ def actualizar_producto(id):
     datos = request.json
     nombre = datos.get("nombre")
     precio = datos.get("precio")
+    stock = datos.get("stock")
 
     conn = get_db_connection()
     cur = conn.cursor()
 
-    cur.execute("UPDATE productos SET nombre = %s, precio = %s WHERE id = %s RETURNING id;", (nombre, precio, id))
+    cur.execute("UPDATE productos SET nombre = %s, precio = %s, stock = %s WHERE id = %s RETURNING id;", (nombre, precio, stock, id))
     actualizado = cur.fetchone()
 
     if actualizado:
